@@ -1,11 +1,33 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import App from './components/app';
-import store from './store';
+import YTSearch from 'youtube-api-search';
+import SearchBar from './components/search_bar';
+import VideoList from './components/video_list';
 
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>
-  , document.querySelector('.container'));
+const API_KEY = 'AIzaSyABNZKgrgnzHOs7tgKkGUjc-KUKobmJxQA';
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      videos: [],
+    };
+
+    YTSearch({key: API_KEY, term: 'discgolf'}, (videos) => { 
+      this.setState({ videos }); /* == this.setState({ videos: videos });*/
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <SearchBar />
+        <VideoList videos={this.state.videos} />
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
+
