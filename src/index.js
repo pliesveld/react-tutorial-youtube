@@ -11,20 +11,12 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    const onVideoListItemClick = (index) => {
-      this.setState({
-        selectedVideo: this.state.videos[index]
-      });
-    }
-
     this.state = {
       videos: [],
       selectedVideo: null,
-      onVideoListItemClick: onVideoListItemClick
     };
 
     YTSearch({key: API_KEY, term: 'discgolf'}, (videos) => { 
-
       this.setState({
         videos: videos,
         selectedVideo: videos[0]
@@ -37,7 +29,7 @@ class App extends Component {
       <div>
         <SearchBar />
         <VideoDetail video={this.state.selectedVideo}  />
-        <VideoList videos={this.state.videos} onClick={this.state.onVideoListItemClick} />
+        <VideoList videos={this.state.videos} onVideoSelect={selectedVideo => this.setState({selectedVideo})} />
       </div>
     );
   }
